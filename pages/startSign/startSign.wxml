@@ -1,0 +1,63 @@
+<!--pages/startSign/startSign.wxml-->
+<scroll-view scroll-y="{{isScroll}}">
+  <view class='background'>
+    <view class='messages-mask' bindtap='message_disappear' wx:if="{{message_tip}}">
+      <view class='dialog'>
+       <block wx:for='{{signUpStudent}}' wx:key='idx' wx:for-index='index_x' >
+       <!-- <view class='class-box'> -->
+               <view class='message-text'>{{number[index_x]}}\n{{signUpStudent[index_x]}}</view>
+       <!-- </view> -->
+        </block>
+      </view>
+    </view>
+
+    <view class='card-background' catchtouchmove="ture">
+      <form bindsubmit='formSubmit'>
+        <view class='sign-password'>
+          <view class='title-line'>
+            <text class='form-title'>实验签到</text>
+          </view>
+
+          <view style='display: flex; flex-direction: column;'>
+            <text class='second-title'>设置验证码:</text>
+            <view class='password-box'>
+              <block wx:for="{{Length}}" wx:key="item">
+                <input class='iptbox' value="{{Value.length>=index+1?Value[index]:''}}" disabled password='{{ispassword}}' catchtap='Tap'>{{mask[item]}}</input>
+              </block>
+            </view>
+            <!-- 
+          <input name="password" password="{{true}}" class='ipt' maxlength="{{Length}}" focus="{{isFocus}}" bindinput="Focus"></input> -->
+          </view>
+        </view>
+
+        <view style='display: flex; flex-direction: column; height: 30%' wx:if='{{!isStart}}'>
+          <text class='second-title'>签到时长:</text>
+          <view class='picker-box' style='display: flex; flex-direction: row;'>
+            <text class='third-title'>小时：</text>
+            <picker class="picker" bindchange="bindPickerChange_a" value="{{hour_index}}" range="{{hour}}" bindtap='bindPickerTapOn_a' bindcancel="bindPickerTapOff_a">
+              <view class='picker-btn'>{{hour[hour_index]}}
+              </view>
+            </picker>
+
+            <text class='third-title'>分钟：</text>
+            <picker class="picker" bindchange="bindPickerChange_b" value="{{minute_index}}" range="{{minute}}" bindtap='bindPickerTapOn_b' bindcancel="bindPickerTapOff_b">
+              <view class='picker-btn'>{{minute[minute_index]}}
+              </view>
+            </picker>
+          </view>
+        </view>
+
+        <view class='time-container' wx:if='{{isStart}}'>
+          <!--创建两个Canvas  -->
+          <canvas class='bgCanvas' canvas-id='bgCanvas'></canvas>
+          <view class='canvas-title'>倒计时</view>
+          <view class='stepText'>{{stepText}}</view>
+        </view>
+
+        <view class='signup-btn'>
+          <button class='btn-submit' bindtap='check'>查看签到名单</button>
+        </view>
+      </form>
+    </view>
+  </view>
+</scroll-view>

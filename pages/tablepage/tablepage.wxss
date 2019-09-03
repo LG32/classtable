@@ -1,0 +1,292 @@
+/* pages/tablepage/tablepage.wxss */
+
+.picker-vc {
+  line-height: 50px;
+  height: 50px;
+  text-align: center;
+}
+
+.picker {
+  display: flex;
+  width: 33%;
+  height: 80rpx;
+  flex-direction: row;
+}
+
+.picker-box {
+  display: flex;
+  width: 100vw;
+  font-size: 32rpx;
+  background-color: #d81830;
+}
+
+.picker-btn {
+  background-color: #d81830;
+  color: #fff;
+  overflow: hidden;
+  font-size: 30rpx;
+  width: 250rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20rpx;
+}
+
+.picker-btn::after {
+  border: none;
+}
+
+.tablebox {
+  width: 100%;
+}
+
+.datebox {
+  width: 100%;
+  font-size: 28rpx;
+  background-color: #f0f0f0;
+}
+
+.datebox-month {
+  display: inline-block;
+  width: 8%;
+  color: #4890a8;
+}
+
+.datebox-day {
+  display: inline-block;
+  width: 12.83%;
+  border-left: 2rpx solid #fff;
+  color: #4890a8;
+}
+
+.datebox-day-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.classlist {
+  width: 100%;
+  height: 210rpx;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px dashed #f0f0f0;
+}
+
+.classNum {
+  width: 8%;
+  font-size: 26rpx;
+  border-bottom: 1px dashed #f0f0f0;
+}
+
+.isClass {
+  font-size: 22rpx;
+  color: aliceblue;
+  height: 200rpx;
+}
+
+.classNum-box {
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px dashed #f0f0f0;
+  color: #999;
+  background-color: #fcfff5;
+}
+
+.className {
+  height: 200rpx;
+  font-size: 26rpx;
+  width: 12.83%;
+  display: inline-block;
+  margin-right: 2px;
+  border-left: 1px dashed #f0f0f0;
+}
+
+.classpaper {
+  height: 200rpx;
+  font-size: 26rpx;
+  width: 12%;
+  margin-right: 5px;
+  border-left: 1px dashed #f0f0f0;
+}
+
+.classview-old {
+  background-color: #2bd4c7;
+  box-shadow: 3px 3px 3px #7df4eb;
+  border-radius: 8px;
+}
+
+.classview-top {
+  background-color: #8f63cc;
+  box-shadow: 3px 3px 3px #b88bf3;
+  border-radius: 8px;
+}
+
+.classview-middle {
+  background-color: #e56489;
+  box-shadow: 3px 3px 3px #fa85b1;
+  border-radius: 8px;
+}
+
+.classview-fresh {
+  background-color: #f1b969;
+  box-shadow: 3px 3px 3px #ffc588;
+  border-radius: 8px;
+}
+
+.img-style {
+  height: 200rpx;
+  width: 90rpx;
+  border-radius: 8px;
+  box-shadow: 3px 3px 3px #d8d8f0;
+}
+
+.messages-mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: #000;
+  z-index: 5;
+  left: 0;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-text {
+  z-index: 6;
+  color: #fff;
+  font-size: 48rpx;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-tip {
+  width: 100%;
+  height: 75rpx;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 0;
+}
+
+.grade-box {
+  width: 20%;
+  display: flex;
+  flex-direction: row;
+}
+
+.grade-box-item {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  padding-top: 16rpx;
+}
+
+.grade-box-text {
+  font-size: 34rpx;
+}
+
+.myclass-box {
+  width: 200rpx;
+  height: 200rpx;
+  position: fixed;
+  right: -10%;
+  bottom: -6%;
+  display: flex;
+  border-radius: 100rpx; 
+}
+
+.myclass-box-item {
+  width: 200rpx;
+  height: 200rpx;
+  display: flex;
+  flex-direction: column;
+  background-color: #d0d0d0;
+  border-radius: 100rpx;
+  position: absolute;
+  /* width: 135rpx; */
+  /* opacity: 0.8; */
+  /* box-shadow: 5rpx 0rpx 30rpx #999; */
+}
+
+.myclass-icon {
+  width: 100rpx;
+  height: 100rpx;
+  padding: 30rpx;
+}
+
+.myclass-text {
+  font-size: 26rpx;
+}
+
+.old-grade-color {
+  width: 40rpx;
+  height: 40rpx;
+  background-color: #2bd4c7;
+  border-radius: 50px;
+}
+
+.top-grade-color {
+  width: 40rpx;
+  height: 40rpx;
+  background-color: #8f63cc;
+  border-radius: 50px;
+}
+
+.middle-grade-color {
+  width: 40rpx;
+  height: 40rpx;
+  background-color: #e56489;
+  border-radius: 50px;
+}
+
+.fresh-grade-color {
+  width: 40rpx;
+  height: 40rpx;
+  background-color: #f1b969;
+  border-radius: 50px;
+}
+
+.end {
+  width: 100%;
+  height: 160rpx;
+  text-align: center;
+}
+
+.arrows-img {
+  width: 25rpx;
+  height: 25rpx;
+  display: inline-block;
+  margin-left: 10rpx;
+}
+
+.img_delete {
+  width: 50rpx;
+  height: 50rpx;
+  z-index: 6;
+  position: absolute;
+  bottom: 10%;
+  left: 46.5%;
+}
+.signInBtn{
+  width: 150rpx;
+  height: 80rpx;
+  z-index: 6;
+  position: absolute;
+  bottom: 10%;
+  left: 41.5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+}

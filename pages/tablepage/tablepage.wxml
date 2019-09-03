@@ -1,0 +1,142 @@
+<!--pages/tablepage/tablepage.wxml-->
+<scroll-view scroll-y='false'>
+  <view style='background-color: #fff'>
+    <view class='message-mask' wx:if="{{message_tip}}" bindtap='message_disappear' class='messages-mask'>
+      <text class='message-text'>{{subject[msg_x][msg_y].subject}}\n {{subject[msg_x][msg_y].teacher}}\n {{subject[msg_x][msg_y].class}}</text>
+
+      <image src='../../images/delete.png' class='img_delete' bindtap='deleteInfo' wx:if='{{isTeacher}}'></image>
+      <button class='signInBtn' wx:if='{{!isTeacher && subject[msg_x][msg_y].state == 1}}' bindtap='signIn'>签到</button>
+    </view>
+
+    <view class='picker-box'>
+      <picker class="picker" bindchange="bindPickerChange_a" value="{{index}}" range="{{classroom}}" bindtap='bindPickerTapOn_a' bindcancel="bindPickerTapOff_a">
+        <view class='picker-btn'>{{classroom[room_index]}}
+          <image wx:if='{{classroom_arr == false}}' class='arrows-img' src='../../images/off_arrows.png'></image>
+          <image wx:if='{{classroom_arr == true}}' class='arrows-img' src='../../images/on_arrows.png'></image>
+        </view>
+      </picker>
+
+      <picker class="picker" bindchange="bindPickerChange_b" value="{{week_index}}" range="{{week}}" bindtap='bindPickerTapOn_b' bindcancel="bindPickerTapOff_b">
+        <view class='picker-btn'>
+          <text wx:if='{{week[week_index] == the_week}}'>(本周)</text>
+          <text>第{{week[week_index]}}周</text>
+          <image wx:if='{{week_arr == false}}' class='arrows-img' src='../../images/off_arrows.png'></image>
+          <image wx:if='{{week_arr == true}}' class='arrows-img' src='../../images/on_arrows.png'></image>
+        </view>
+      </picker>
+
+      <picker class='picker' bindchange='bindPickerChange_term' value='{{indexT}}' range='{{term}}' bindtap='bindPickerTapOn_term' bindcancel="bindPickerTapOff_term">
+        <view class='picker-btn'>
+          <text>{{term[indexT]}}</text>
+          <image wx:if='{{term_arr == false}}' class='arrows-img' src='../../images/off_arrows.png'></image>
+          <image wx:if='{{term_arr == true}}' class='arrows-img' src='../../images/on_arrows.png'></image>
+        </view>
+      </picker>
+    </view>
+
+    <view class='tablebox'>
+      <view class='datebox'>
+        <view class='datebox-month'>
+          <text class='datebox-day-text'>{{month_date}}月</text>
+        </view>
+        <view class='datebox-day'>
+          <text class='datebox-day-text'>周一\n{{week_list[0]}}日</text>
+        </view>
+        <view class='datebox-day'>
+          <text class='datebox-day-text'>周二\n{{week_list[1]}}日</text>
+        </view>
+        <view class='datebox-day'>
+          <text class='datebox-day-text'>周三\n{{week_list[2]}}日</text>
+        </view>
+        <view class='datebox-day'>
+          <text class='datebox-day-text'>周四\n{{week_list[3]}}日</text>
+        </view>
+        <view class='datebox-day'>
+          <text class='datebox-day-text'>周五\n{{week_list[4]}}日</text>
+        </view>
+        <view class='datebox-day'>
+          <text class='datebox-day-text'>周六\n{{week_list[5]}}日</text>
+        </view>
+        <view class='datebox-day'>
+          <text class='datebox-day-text'>周日\n{{week_list[6]}}日</text>
+        </view>
+      </view>
+
+      <block wx:for='{{subject}}' wx:key='idx' wx:for-index='index_x'>
+        <view class='classlist'>
+          <view class='classNum'>
+            <view class='classNum-box'>{{(index_x+1)*2-1}}
+            </view>
+            <view class='classNum-box'>{{(index_x+1)*2}}
+            </view>
+          </view>
+
+          <block wx:for='{{subject[index_x]}}' wx:key='idy' wx:for-index='index_y'>
+            <view wx:if='{{subject[index_x][index_y].subject != 0}}' class='classpaper'>
+              <view wx:if='{{subject[index_x][index_y].grade == 2015 || subject[index_x][index_y].grade == 19}}' class='classview-old'>
+                <view class='isClass' bindtap='message_appear' id='{{index_x}},{{index_y}}'> {{subject[index_x][index_y].subject}} {{subject[index_x][index_y].teacher}} {{subject[index_x][index_y].class}}</view>
+              </view>
+
+              <view wx:if='{{subject[index_x][index_y].grade == 2016 || subject[index_x][index_y].grade == 16}}' class='classview-top'>
+                <view class='isClass' bindtap='message_appear' id='{{index_x}},{{index_y}}'> {{subject[index_x][index_y].subject}} {{subject[index_x][index_y].teacher}} {{subject[index_x][index_y].class}}</view>
+              </view>
+
+              <view wx:if='{{subject[index_x][index_y].grade == 2017 || subject[index_x][index_y].grade == 17}}' class='classview-middle'>
+                <view class='isClass' bindtap='message_appear' id='{{index_x}},{{index_y}}'> {{subject[index_x][index_y].subject}} {{subject[index_x][index_y].teacher}} {{subject[index_x][index_y].class}}</view>
+              </view>
+
+              <view wx:if='{{subject[index_x][index_y].grade == 2018 || subject[index_x][index_y].grade == 18}}' class='classview-fresh'>
+                <view class='isClass' bindtap='message_appear' id='{{index_x}},{{index_y}}'> {{subject[index_x][index_y].subject}} {{subject[index_x][index_y].teacher}} {{subject[index_x][index_y].class}}</view>
+              </view>
+            </view>
+
+            <view wx:else class='className' id='{{index_x*7+index_y}}' catchtap='clickZone'>
+              <image class='img-style' wx:if='{{click_images[index_x*7+index_y] != null}}' src='{{click_images[index_x*7+index_y]}}'></image>
+            </view>
+          </block>
+        </view>
+      </block>
+    </view>
+
+    <view class='bottom-tip'>
+      <view class='grade-box'>
+        <view class='grade-box-item'>
+          <view class='top-grade-color'></view>
+          <text class='grade-box-text' style='color: #8f63cc;'>16级</text>
+        </view>
+      </view>
+
+      <view class='grade-box'>
+        <view class='grade-box-item'>
+          <view class='middle-grade-color'></view>
+          <text class='grade-box-text' style='color: #e56489'>17级</text>
+        </view>
+      </view>
+
+      <view class='grade-box'>
+        <view class='grade-box-item'>
+          <view class='fresh-grade-color'></view>
+          <text class='grade-box-text' style='color: #f1b969'>18级</text>
+        </view>
+      </view>
+
+      <view class='grade-box'>
+        <view class='grade-box-item'>
+          <view class='old-grade-color'></view>
+          <text class='grade-box-text' style='color: #2bd4c7;'>19级</text>
+        </view>
+      </view>
+    </view>
+
+    <view class='myclass-box' bindtap='onMyClass'>
+      <view class='myclass-box-item'>
+        <image class='myclass-icon' src='../../images/my.png'></image>
+        <!-- <text class='myclass-text'>我的课程</text> -->
+      </view>
+    </view>
+
+    <view class='end'>
+      <text style='color: #999; font-size:32rpx;'>@哈尔滨理工大学软件与微电子学院\n@开源软硬件协会</text>
+    </view>
+  </view>
+</scroll-view>

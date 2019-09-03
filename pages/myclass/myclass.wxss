@@ -1,0 +1,67 @@
+/* pages/myclass/myclass.wxss */
+
+.subject-box {
+  padding: 10rpx;
+  border-radius: 20rpx;
+  margin: 30rpx 10rpx;
+  background-color: #fff;
+  box-shadow: 3rpx 3rpx 20rpx #888;
+  display: flex;
+  flex-direction: column;
+}
+
+.subject-line {
+  display: flex;
+  border-bottom: 1rpx dashed #888;
+}
+
+.subject-text {
+  font-size: 36rpx;
+  margin: 20rpx;
+}
+.title-line{
+  border-bottom: 1px solid #ddd;
+  width: 600rpx;
+  height: 32rpx;
+  margin: 0 auto;
+}
+.list-title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  margin: 0 auto;
+  background: #fff;
+  width: 200rpx;
+}
+.end {
+  width: 100%;
+  height: 80rpx;
+  text-align: center;
+}
+.exit-box{
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 100rpx;
+  position: fixed;
+  opacity: 0.8;
+  box-shadow: 5rpx 0rpx 30rpx #888;
+  bottom: 7%;
+  right: 7%;
+}
+.exit-icon{
+  width: 100rpx;
+  height: 100rpx;
+}
+.sign-btn-line{
+  margin-top: 10rpx; 
+}
+
+.signStart-btn{
+  background-color: #25c6fc;
+  color: #fff;
+}
+
+.signing-btn{
+}

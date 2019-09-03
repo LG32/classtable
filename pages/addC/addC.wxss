@@ -1,0 +1,120 @@
+/* pages/addC.wxss */
+
+.page_container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* justify-content: center; */
+  align-content: center;
+  flex-direction: column;
+  /* position: absolute; */
+}
+
+.section22 {
+  display: flex;
+  flex-direction: row;
+}
+
+.title_container {
+  padding: 10rpx;
+  border-radius: 20rpx;
+  margin: 20rpx 10rpx;
+  height: 320rpx;
+  background-color: #fff;
+  box-shadow: 3rpx 3rpx 20rpx #888;
+  display: flex;
+  flex-direction: column;
+}
+
+.title_textarea {
+  height: 60rpx;
+  padding: 15rpx;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1rpx dashed gray;
+  margin: 10rpx;
+  font-size: 32rpx;
+}
+
+.information_container {
+  padding: 10rpx;
+  border-radius: 20rpx;
+  margin: 20rpx 10rpx;
+  background-color: #fff;
+  box-shadow: 3rpx 3rpx 20rpx #888;
+  display: flex;
+  flex-direction: column;
+}
+
+.input_left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx;
+  width: 150rpx;
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.input_textarea {
+  height: 60rpx;
+  padding: 15rpx;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1rpx solid gray;
+  margin: 10rpx;
+  font-size: 32rpx;
+  width: 450rpx;
+  color: #888;
+}
+
+.submit {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+.submit-btn {
+  margin: 10rpx;
+  color: #fff;
+  background-color: #25c6fc;
+}
+
+.submit-btn::after {
+  border: none;
+}
+
+.wxSearch {
+  top: 43px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* border-top: 1px #eee solid; */
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 500;
+}
+
+.wxSearchInner {
+  background-color: #fff;
+  box-shadow: 1px 1px 10px #999;
+}
+
+.wxSearch-section {
+  background-color: #fff;
+  padding: 5px 10px;
+  border: 1px #eee solid;
+}
+
+.wxSearch-input {
+  flex: 8;
+  background-color: #eee;
+  padding: 5px 10px;
+}
+
+.wxSearchMindKeyItem {
+  padding: 10px 5px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  font-size: 14px;
+  color: cornflowerblue;
+}

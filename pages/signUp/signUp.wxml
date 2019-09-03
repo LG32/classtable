@@ -1,0 +1,31 @@
+<!--pages/signUp/signUp.wxml-->
+<view class='background'>
+  <view class='card-background'>
+
+    <form bindsubmit='formSubmit'>
+      <view class='sign-password'>
+        <view class='title-line'>
+          <text class='form-title'>签到验证</text>
+        </view>
+
+        <view class='password-box'>
+          <block wx:for="{{Length}}" wx:key="item">
+            <input class='iptbox' value="{{Value.length>=index+1?Value[index]:''}}" disabled password='{{ispassword}}' catchtap='Tap'></input>
+          </block>
+        </view>
+
+        <input name="password" password="{{true}}" class='ipt' maxlength="{{Length}}" focus="{{isFocus}}" bindinput="Focus"></input>
+      </view>
+
+      <view class='class-information'>
+        <view class='class-name'>实验名：{{class_name}}</view>
+        <view class='teacher-name'>实验教师：{{teacher_name}}</view>
+        <view class='class-time'>实验时间：{{class_time}}</view>
+      </view>
+
+      <view class='signup-btn'>
+        <button class='btn-submit' form-type='submit'>签到</button>
+      </view>
+    </form>
+  </view>
+</view>

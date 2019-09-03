@@ -1,0 +1,68 @@
+<view class="page_container">
+  <view class="information_container">
+
+    <picker bindchange="bindMPickerChange" value="{{indexM}}" range="{{majorName}}">
+      <view class="section22">
+        <view class="input_left">专业：</view>
+        <view class='input_textarea' disabled='true' wx:if='{{!flag}}'>请选择</view>
+        <view class='input_textarea' disabled='true' wx:if='{{flag}}'>{{major[indexM].major_name}}</view>
+      </view>
+    </picker>
+
+    <view class="section22">
+      <view class="input_left">课程名：</view>
+      <input bindinput="wxSearchInput" bindfocus="wxSerchFocus" value="{{wxSearchData.value}}" bindblur='wxSearchBlur' class="input_textarea" placeholder="未输入" />
+    </view>
+    <view class="wxSearch" bindtap="wxSearchTap" wx:if='{{wxSearchData.view.isShow}}'>
+      <view class="wxSearchInner">
+        <block wx:for="{{wxSearchData.mindKeys}}" wx:key=''>
+          <view class="wxSearchMindKeyItem" bindtap="wxSearchKeyTap" data-key="{{item}}">{{item}}</view>
+        </block>
+      </view>
+    </view>
+
+    <picker bindchange="bindGPickerChange" value="{{indexG}}" range="{{arrayGrd}}">
+      <view class="section22">
+        <view class="input_left">年级：</view>
+        <view class='input_textarea' disabled='true' wx:if='{{!flag}}'>选择年级</view>
+        <view class='input_textarea' disabled='true' wx:if='{{flag}}'>{{arrayGrd[indexG]}}级</view>
+        <!-- <view class='input_textarea' disabled='true'>{{arrayGrd[indexG]}}级</view> -->
+      </view>
+    </picker>
+
+
+    <view class="section22">
+      <view class="input_left">班级：</view>
+      <picker bindchange='bindCPickerChange' value='{{indexC}}' range='{{arrayClass}}'>
+        <view class='input_textarea' disabled='true'>{{checkClass}}班</view>
+      </picker>
+      <!-- <view><image src='../../images/clear.png' style='width: 50rpx;height: 50rpx;'></image></view> -->
+      <!-- <input class="input_textarea" placeholder="例如：软5，6。电1等" bindinput='bindClassInput' value="{{classValue}}" /> -->
+    </view>
+
+
+
+    <view class="section22">
+      <view class="input_left">时间：</view>
+      <view class="input_textarea" bindtap='bindselChange'>第{{timeFirst}}大节</view>
+    </view>
+  </view>
+
+  <view class="title_container">
+    <view class="title_textarea">
+      地点：{{classroom}}
+    </view>
+    <view class="title_textarea">
+      周数: {{week}}
+    </view>
+    <view class="title_textarea">
+      当天是: {{date}} {{day}}
+    </view>
+    <view class="title_textarea">
+      学期: {{term}}
+    </view>
+  </view>
+  <view class='submit'>
+    <button class="submit-btn" bindtap="bindSubtap">提交</button>
+  </view>
+</view>

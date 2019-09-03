@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/tablepage/tablepage",
+    "pages/startSign/startSign",
+    "pages/signUp/signUp",
+    "pages/myclass/myclass",
+    "pages/addC/addC",
+    "pages/login/login",
+    "pages/upFile/upFile"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#D81830",
+    "navigationBarTitleText": "预约实验室",
+    "navigationBarTextStyle": "white"
+  },
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,48 @@
+<!--pages/myclass/myclass.wxml-->
+<view>
+  <view style='margin: 60rpx 0;'>
+    <view class='title-line'>
+      <text class='list-title'>我的预约</text>
+    </view>
+  </view>
+
+  <block wx:for='{{subject}}' wx:key='idx' wx:for-index='index_x'>
+    <view class='subject-box' bindtap='startSignIn' id='{{index_x}}'>
+      <view class='subject-line'>
+        <view class='subject-text'>实验名: {{subject[index_x].course_name}}</view>
+      </view>
+
+      <view class='subject-line'>
+        <view class='subject-text'>实验室: {{subject[index_x].course_room}}</view>
+        <view class='subject-text'>{{subject[index_x].grade}}届</view>
+        <view class='subject-text'>{{subject[index_x].course_class}}班</view>
+      </view>
+
+      <view class='subject-line'>
+        <view class='subject-text'>{{subject[index_x].course_date}}</view>
+        <view class='subject-text'>第{{subject[index_x].part}}大节</view>
+        <view class='subject-text'>教师:{{subject[index_x].course_teacher}}</view>
+      </view>
+
+      <view class='sign-btn-line' wx:if='{{subject[index_x].state == 0}}'>
+        <button class='signStart-btn'>开始签到</button>
+      </view>
+
+      <view class='sign-btn-line' wx:if='{{subject[index_x].state == 1}}'>
+        <button class='signing-btn'>签到已开始</button>
+      </view>
+
+      <view class='sign-btn-line' wx:if='{{subject[index_x].state == 2}}'>
+        <button class='signing-btn'>签到已结束</button>
+      </view>
+    </view>
+  </block>
+
+  <view class='exit-box' bindtap='exit'>
+    <image class='exit-icon' src='../../images/exit.png'></image>
+  </view>
+
+  <view class='end'>
+    <text style='color: #999'>没有更多信息</text>
+  </view>
+</view>

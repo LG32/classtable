@@ -1,0 +1,2 @@
+<!--pages/upFile/upFile.wxml-->
+<button bindtap='updata'>上传</button>

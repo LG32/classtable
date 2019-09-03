@@ -1,0 +1,32 @@
+<!--pages/login/login.wxml-->
+<view class='userinfo-box' wx:if='{{userInfoFlag == false}}'>
+  <image class='userinfo-img' src='../../images/unlogin.png'></image>
+  <text class='userinfo-name' style='margin-top: 20rpx'>未登录</text>
+</view>
+<view class='userinfo-box' wx:if='{{userInfoFlag == true}}'>
+  <image class='userinfo-img' src='{{avatarUrl}}'></image>
+  <text class='userinfo-name' style='margin-top: 20rpx'>{{userInfo.nickName}}</text>
+</view>
+
+<view class='userinfo-loginbtn'>
+  <view class='title-line'>
+    <text class='form-title'>{{identity}}</text>
+  </view>
+  <form bindsubmit="formSubmit">
+    <view class='password-view' wx:if='{{isStudent==false}}'>
+      <input class='password-text' name='teacher_id' placeholder='请输入教工号'></input>
+      <input password='true' type='password' class='password-text' name='password' placeholder='请输入密码'></input>
+    </view>
+
+    <view class='password-view' wx:if='{{isStudent==true}}'>
+      <input class='password-text' name='student_id' placeholder='请输入学号'></input>
+    </view>
+
+    <button class='loginbtn' open-type='getUserInfo' formType="submit">登录</button>
+  </form>
+</view>
+
+<view class='end-btn'>
+  <input bindtap='onClickChangeIdentity' placeholder='{{changeIdentity}}' disabled='true' style='width:100%' placeholder-style='font-size: 32rpx'>
+  </input>
+</view>
