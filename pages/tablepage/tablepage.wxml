@@ -73,7 +73,7 @@
 
           <block wx:for='{{subject[index_x]}}' wx:key='idy' wx:for-index='index_y'>
             <view wx:if='{{subject[index_x][index_y].subject != 0}}' class='classpaper'>
-              <view wx:if='{{subject[index_x][index_y].grade == 2015 || subject[index_x][index_y].grade == 19}}' class='classview-old'>
+              <view wx:if='{{subject[index_x][index_y].grade == 2019 || subject[index_x][index_y].grade == 19}}' class='classview-old'>
                 <view class='isClass' bindtap='message_appear' id='{{index_x}},{{index_y}}'> {{subject[index_x][index_y].subject}} {{subject[index_x][index_y].teacher}} {{subject[index_x][index_y].class}}</view>
               </view>
 
