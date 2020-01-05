@@ -1,10 +1,16 @@
 // pages/tablepage/tablepage.js
 var week = [];
-var year = [];
-var month = [];
-var day = [];
 var util = require("../../utils/util.js");
-var requestman = require("../../utils/requestman.js");
+let subject_row = [];
+
+for(let i = 0; i < 6; i++){
+  let subject_line = [];
+  for (let j = 0; j < 7; j++){
+    let temp = { "id": "0",};
+    subject_line.push(temp)
+  }
+  subject_row.push(subject_line)
+}
 
 for (var i = 0; i < 28; i++) {
   week.push(i)
@@ -31,98 +37,7 @@ Page({
     week_list: 0,
     month_list: 0,
     information_obj: {},
-    subject: [
-      [{
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }],
-      [{
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }],
-      [{
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }],
-      [{
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }],
-      [{
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }],
-      [{
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }, {
-        "id": "0",
-      }]
-    ],
+    subject: subject_row,
     click_images: 0,
     last_click: -1,
     msg_x: -1,
@@ -162,14 +77,7 @@ Page({
       wx.showLoading({
         title: '加载中',
       })
-      // var resBody = requestman.getInfoTest(term, lab, startDate);
-      // console.log(resBody);
-      // if(resBody != false){
-      //   wx.hideLoading();
-      //   that.data.information_obj = resBody,
-      //   that.information_factory(resBody);
-      // }
-      
+
       wx.cloud.callFunction({
         name: 'getinfotest',
         data: {
