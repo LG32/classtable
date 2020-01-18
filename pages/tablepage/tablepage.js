@@ -1,6 +1,7 @@
 // pages/tablepage/tablepage.js
-var week = [];
-var util = require("../../utils/util.js");
+let week = [];
+let util = require("../../utils/util.js");
+let TablePageSVC = require('../../service/tablepage_svc');
 let subject_row = [];
 
 for(let i = 0; i < 6; i++){
@@ -12,11 +13,11 @@ for(let i = 0; i < 6; i++){
   subject_row.push(subject_line)
 }
 
-for (var i = 0; i < 28; i++) {
+for (let i = 0; i < 28; i++) {
   week.push(i)
 }
 
-var month_last = Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+let month_last = Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
 
 Page({
@@ -56,72 +57,54 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var startDate = util.formatTime(new Date);
+    let startDate = util.formatTime(new Date);
     startDate = startDate.toString();
     console.log(startDate);
-    var that = this;
-    var lab = that.data.classroom[that.data.room_index];
-    var term = wx.getStorageSync('term');
-    if (typeof (term) == "undefined" || term.length == 0) {
+    let that = this;
+    let lab = that.data.classroom[that.data.room_index];
+    let term = wx.getStorageSync('term');
+    if (typeof (term) == "undefined" || term.length === 0) {
       term = that.data.term[that.data.indexT];
     }
 
-    if (options.week != undefined && options.room_index) {
+    if (options.week !== undefined && options.room_index) {
       that.setData({
         room_index: options.room_index,
         week_index: options.week,
         today_date: startDate,
-      })
+      });
       that.onPullDownRefresh();
     } else {
-      wx.showLoading({
-        title: '加载中',
-      })
-
-      wx.cloud.callFunction({
-        name: 'getinfotest',
-        data: {
-          term: term,
-          lab: lab,
-          date: startDate,
-        },
-        success: res => {
-          wx.hideLoading();
-          console.log(res);
-          that.setData({
-            information_obj: res,
-          })
-          that.information_factory(res);
-        },
-        fail: res => {
-          wx.hideLoading();
-          console.log(res);
-        }
-      })
+      let param = {
+        'lab': lab,
+        'term': term,
+        'startDate': startDate,
+      };
       that.setData({
         date: startDate,
         today_date: startDate,
-      })
+      });
+      TablePageSVC.getInfoTest(param, that.getInfoTest_cb);
     }
-    that.getAllLab();
+    TablePageSVC.getAllLab(that.getAllLab_cb)
   },
 
   /**
    * 生命周期
    */
   onShow: function (options) {
-    var that = this;
+    let that = this;
     if (that.data.onLoadFlag) {
       that.setData({
         onLoadFlag: false,
       })
     } else {
-      wx.onAppShow
+      wx.onAppShow;
       that.onPullDownRefresh();
     }
-    var isStudent = wx.getStorageSync('isStudent');
-    var isTeacher = wx.getStorageSync('isTeacher');
-    var studentId = wx.getStorageSync('studentId');
+    let isStudent = wx.getStorageSync('isStudent');
+    let isTeacher = wx.getStorageSync('isTeacher');
+    let studentId = wx.getStorageSync('studentId');
     console.log(studentId);
     if (typeof (isStudent) != "undefined" && typeof (isTeacher) != "undefined") {
       that.setData({
@@ -129,7 +112,7 @@ Page({
         isTeacher: isTeacher,
       })
     }
-    if (typeof (studentId) != 'underfined' && studentId.length != 0) {
+    if (typeof (studentId) != 'undefined' && studentId.length !== 0) {
       that.setData({
         studentId: studentId,
       })
@@ -137,14 +120,14 @@ Page({
   },
 
   information_factory: function (information_obj) {
-    var that = this;
-    var obj = information_obj;
-    var date = obj.result.start_time.split('-', 3);
-    var data = obj.result.data;
-    var year = date[0];
-    var month = date[1];
-    var monday = parseInt(date[2]);
-    var week = obj.result.week;
+    let that = this;
+    let obj = information_obj;
+    let date = obj.result.start_time.split('-', 3);
+    let data = obj.result.data;
+    let year = date[0];
+    let month = date[1];
+    let monday = parseInt(date[2]);
+    let week = obj.result.week;
 
     console.log('date' + date);
     console.log('data');
@@ -154,12 +137,12 @@ Page({
       month_date: month,
       monday_date: monday,
       year_date: year,
-    })
+    });
 
     that.data_factory(data);
     that.week_factory(monday);
 
-    if (week != undefined) {
+    if (week !== undefined) {
       that.setData({
         the_week: obj.result.week,
         week_index: obj.result.week,
@@ -170,13 +153,12 @@ Page({
   },
 
   data_factory: function (data_obj) {
-    var that = this;
-    var obj = data_obj;
-    var subject_obj = that.data.subject;
-    console.log("data_obj");
-    console.log(data_obj);
-    for (var i = 0; i < 6; i++) {
-      for (var j = 0; j < 7; j++) {
+    let that = this;
+    let obj = data_obj;
+    let subject_obj = that.data.subject;
+
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 7; j++) {
         subject_obj[i][j].id = '0';
         subject_obj[i][j].subject = '0';
         subject_obj[i][j].teacher = '0';
@@ -186,11 +168,11 @@ Page({
       }
     }
 
-    for (var i = 0; i < data_obj.length; i++) {
-      var olddata = obj[i].course_date.replace(/-/g, '/');
-      var time = new Date(olddata);
-      var day = time.getDate() - that.data.monday_date;
-      var part = obj[i].part - 1;
+    for (let i = 0; i < data_obj.length; i++) {
+      let olddata = obj[i].course_date.replace(/-/g, '/');
+      let time = new Date(olddata);
+      let day = time.getDate() - that.data.monday_date;
+      let part = obj[i].part - 1;
       if (day < 0) {
         day = day + month_last[that.data.month_date - 1];
       }
@@ -212,17 +194,17 @@ Page({
   },
 
   week_factory: function (monday_date) {
-    var that = this;
-    var monday = monday_date;
-    var month_date = that.data.month_date - 0;
-    var last_day = month_last[month_date - 1];
-    var week_list = new Array();
-    var month_list = new Array();
+    let that = this;
+    let monday = monday_date;
+    let month_date = that.data.month_date - 0;
+    let last_day = month_last[month_date - 1];
+    let week_list = [];
+    let month_list = [];
     week_list.push(monday);
     month_list.push(month_date);
 
-    for (var i = 1; i < 7; i++) {
-      var day = monday + i;
+    for (let i = 1; i < 7; i++) {
+      let day = monday + i;
       if ((last_day - day) < 0) {
         week_list.push((day - last_day));
         month_list.push(month_date + 1);
@@ -238,66 +220,46 @@ Page({
     })
   },
 
-  getCloudInfo: function (labInfo, weekInfo) {
-    var that = this;
-    var lab = labInfo;
-    var week = weekInfo;
-    var term = that.data.term[that.data.indexT];
-
-    wx.showLoading({
-      title: '加载中',
-    })
-    wx.cloud.callFunction({
-      name: 'getInfobyweek',
-      data: {
-        lab: lab,
-        week: week,
-        term: term,
-      },
-      success: res => {
-        wx.hideLoading();
-        console.log(res);
-        that.information_factory(res);
-      },
-      fail: res => {
-        wx.hideLoading();
-        console.log(res);
-      }
-    })
-  },
-
   /**
    * 请求得到所有实验室数据
    */
-  getAllLab: function () {
-    var that = this;
-    var classroom = new Array();
-    wx.cloud.callFunction({
-      name: 'getalllab',
-      data: {},
-      success: res => {
-        console.log(res)
-        for (var i = 0; i < res.result.data.length; i++) {
-          classroom[i] = res.result.data[i].lab_room;
-        }
-
-        that.setData({
-          classroom: classroom,
-        })
-      }
+  getAllLab_cb: function (classroom) {
+    let that = this;
+    that.setData({
+      classroom: classroom,
     })
   },
 
+  getCloudInfo_cb: function (res) {
+    let that = this;
+    that.information_factory(res);
+  },
+
+  getInfoTest_cb: function (res) {
+    let that = this;
+    that.setData({
+      information_obj: res,
+    });
+    that.information_factory(res);
+  },
+
   bindPickerChange_a: function (e) {
-    var that = this;
-    var room_index = e.detail.value;
-    var week = that.data.week[that.data.week_index];
+    let that = this;
+    let room_index = e.detail.value;
+    let week = that.data.week[that.data.week_index];
+    let lab = that.data.classroom[that.data.room_index];
+    let term = that.data.term[that.data.indexT];
+    let param = {
+      'lab': lab,
+      'week': week,
+      'term': term,
+    };
 
     that.setData({
       room_index: room_index,
       classroom_arr: false,
-    })
-    that.getCloudInfo(that.data.classroom[room_index], week);
+    });
+    TablePageSVC.getInfoByWeek(param, that.getCloudInfo_cb);
   },
 
   bindPickerTapOn_a: function () {
@@ -313,15 +275,22 @@ Page({
   },
 
   bindPickerChange_b: function (e) {
-    var week_index = e.detail.value;
-    var that = this;
-    var lab = that.data.classroom[that.data.room_index];
+    let that = this;
+    let week_idx = e.detail.value;
+    let week = that.data.week[week_idx];
+    let lab = that.data.classroom[that.data.room_index];
+    let term = that.data.term[that.data.indexT];
+    let param = {
+      'lab': lab,
+      'week': week,
+      'term': term,
+    };
 
     that.setData({
-      week_index: week_index,
+      week_index: week_idx,
       week_arr: false,
-    })
-    that.getCloudInfo(lab, week[week_index]);
+    });
+    TablePageSVC.getInfoByWeek(param, that.getCloudInfo_cb);
   },
 
   bindPickerTapOn_b: function () {
@@ -337,14 +306,21 @@ Page({
   },
 
   bindPickerChange_term: function (e) {
-    console.log('选择学期,携带值', e.detail.value)
-    var that = this;
-    var lab = that.data.classroom[that.data.room_index];
-    var week = that.data.week[that.data.week_index];
+    let that = this;
+    let term_idx = e.detail.value;
+    let lab = that.data.classroom[that.data.room_index];
+    let week = that.data.week[that.data.week_index];
+    let term = that.data.term[term_idx];
+    let param = {
+      'lab': lab,
+      'week': week,
+      'term': term,
+    };
+
     that.setData({
       indexT: e.detail.value,
-    })
-    that.getCloudInfo(lab, week);
+    });
+    TablePageSVC.getInfoByWeek(param, that.getCloudInfo_cb);
   },
 
   bindPickerTapOn_term: function () {
@@ -360,13 +336,13 @@ Page({
   },
 
   clickZone: function (e) {
-    var that = this;
-    var click_images = new Array();
-    var zoneId = e.currentTarget.id;
-    var click_string = 'click_images[' + zoneId + ']';
-    var img_src = '../../images/add_class.png';
+    let that = this;
+    let click_images = [];
+    let zoneId = e.currentTarget.id;
+    let click_string = 'click_images[' + zoneId + ']';
+    let img_src = '../../images/add_class.png';
 
-    if (that.data.last_click != zoneId) {
+    if (that.data.last_click !== zoneId) {
       console.log(zoneId);
       that.setData({
         click_images: click_images,
@@ -376,18 +352,18 @@ Page({
         last_click: zoneId,
       });
     } else {
-      var session = wx.getStorageSync('session');
-      var zone = parseInt(zoneId);
-      var zone_x = (zone) % 7;
-      var zone_y = parseInt((zone) / 7);
-      var day = that.data.week_list[zone_x];
-      var month = that.data.month_list[zone_x];
-      var part = zone_y + 1;
+      let session = wx.getStorageSync('session');
+      let zone = parseInt(zoneId);
+      let zone_x = (zone) % 7;
+      let zone_y = parseInt((zone) / 7);
+      let day = that.data.week_list[zone_x];
+      let month = that.data.month_list[zone_x];
+      let part = zone_y + 1;
       if (day - 10 < 0) {
         day = '0' + day;
       }
-      var date = that.data.year_date + "-" + month + "-" + day;
-      var startDate = that.data.today_date;
+      let date = that.data.year_date + "-" + month + "-" + day;
+      let startDate = that.data.today_date;
 
       wx.setStorageSync("week", that.data.week[that.data.week[that.data.week_index]]);
       wx.setStorageSync("classroom", that.data.classroom[that.data.room_index]);
@@ -397,8 +373,8 @@ Page({
       wx.setStorageSync('term', that.data.term[that.data.indexT]);
 
       that.judgeClassFree(zone_x, zone_y);
-      if (that.data.isTeacher == true && that.data.isStudent == false) {
-        if (session == startDate) {
+      if (that.data.isTeacher === true && that.data.isStudent === false) {
+        if (session === startDate) {
           wx.navigateTo({
             url: '../addC/addC',
           })
@@ -409,11 +385,11 @@ Page({
         }
       }
 
-      if (that.data.isTeacher == false && that.data.isStudent == true) {
+      if (that.data.isTeacher === false && that.data.isStudent === true) {
         util.showBusy('学生无法新建实验');
       }
 
-      if (that.data.isTeacher == false && that.data.isStudent == false) {
+      if (that.data.isTeacher === false && that.data.isStudent === false) {
         wx.navigateTo({
           url: '../login/login?id=0',
         })
@@ -423,13 +399,13 @@ Page({
 
 
   judgeClassFree: function (x, y) {
-    var that = this;
-    var part_index = y;
-    var day_index = x;
-    var free = 0;
-    var subject = that.data.subject;
-    for (var i = 0; i < 6; i++) {
-      if (subject[i][day_index].subject == 0) {
+    let that = this;
+    let part_index = y;
+    let day_index = x;
+    let free = 0;
+    let subject = that.data.subject;
+    for (let i = 0; i < 6; i++) {
+      if (subject[i][day_index].subject === 0) {
         console.log('(' + i + ',' + day_index + ') is free');
         free = free + ',' + (i + 1);
       }
@@ -438,20 +414,20 @@ Page({
   },
 
   message_disappear: function () {
-    var that = this;
+    let that = this;
     that.setData({
       message_tip: false,
     })
   },
 
   message_appear: function (e) {
-    var that = this;
-    var zoneId = e.currentTarget.id;
-    var index = zoneId.split(",", 2);
-    var index_x = index[0];
-    var index_y = index[1];
+    let that = this;
+    let zoneId = e.currentTarget.id;
+    let index = zoneId.split(",", 2);
+    let index_x = index[0];
+    let index_y = index[1];
 
-    console.log("run messsage_appear")
+    console.log("run messsage_appear");
 
     that.setData({
       message_tip: true,
@@ -478,18 +454,18 @@ Page({
   },
 
   deleteInfo: function () {
-    var that = this;
-    var msg_x = that.data.msg_x;
-    var msg_y = that.data.msg_y;
-    var subject = that.data.subject;
-    var id = subject[msg_x][msg_y].id;
-    var teacher_id = wx.getStorageSync('teacher_id');
-    var session = wx.getStorageSync('session');
-    var today_date = that.data.today_date;
+    let that = this;
+    let msg_x = that.data.msg_x;
+    let msg_y = that.data.msg_y;
+    let subject = that.data.subject;
+    let id = subject[msg_x][msg_y].id;
+    let teacher_id = wx.getStorageSync('teacher_id');
+    let session = wx.getStorageSync('session');
+    let today_date = that.data.today_date;
     console.log("session" + session);
     console.log('teacher_id' + teacher_id);
 
-    if (session == today_date && teacher_id != '') {
+    if (session === today_date && teacher_id !== '') {
       wx.showModal({
         title: '提示',
         content: '是否删除这节实验课',
@@ -497,7 +473,7 @@ Page({
           if (res.confirm) {
             wx.showLoading({
               title: '加载中',
-            })
+            });
             wx.cloud.callFunction({
               name: 'deleteInfo',
               data: {
@@ -507,10 +483,10 @@ Page({
               success: res => {
                 console.log(res);
                 wx.hideLoading();
-                if (res.result.res == 1) {
+                if (res.result.res === 1) {
                   util.showSuccess('成功删除');
                   that.onPullDownRefresh();
-                } else if (res.result.res == 0) {
+                } else if (res.result.res === 0) {
                   util.showModel('失败', '您不是该实验的建立者');
                 }
               },
@@ -530,14 +506,14 @@ Page({
   },
 
   onMyClass: function () {
-    var that = this;
-    var session = wx.getStorageSync('session');
-    var teacher_id = wx.getStorageSync('teacher_id');
-    var startDate = that.data.today_date;
+    let that = this;
+    let session = wx.getStorageSync('session');
+    let teacher_id = wx.getStorageSync('teacher_id');
+    let startDate = that.data.today_date;
     console.log(teacher_id);
 
-    if (that.data.isTeacher == true) {
-      if (session == startDate && teacher_id != '') {
+    if (that.data.isTeacher === true) {
+      if (session === startDate && teacher_id !== '') {
         wx.navigateTo({
           url: '../myclass/myclass',
         })
@@ -549,7 +525,7 @@ Page({
     }
 
 
-    if (that.data.isStudent == true) {
+    if (that.data.isStudent === true) {
       wx.showModal({
         title: '提示',
         content: '是否要注销该账户',
@@ -576,7 +552,7 @@ Page({
       })
     }
 
-    if (that.data.isStudent == false && that.data.isTeacher == false) {
+    if (that.data.isStudent === false && that.data.isTeacher === false) {
       wx.navigateTo({
         url: '../login/login?id=1',
       })
@@ -587,14 +563,14 @@ Page({
    * 点击签到
    */
   signIn: function () {
-    var that = this;
-    var msg_x = that.data.msg_x;
-    var msg_y = that.data.msg_y;
-    var subject = that.data.subject[msg_x][msg_y]
-    var classId = subject.id;
-    var className = subject.subject;
-    var teacher = subject.teacher
-    var url = '../signUp/signUp?classId=' + classId + '&className=' + className +
+    let that = this;
+    let msg_x = that.data.msg_x;
+    let msg_y = that.data.msg_y;
+    let subject = that.data.subject[msg_x][msg_y];
+    let classId = subject.id;
+    let className = subject.subject;
+    let teacher = subject.teacher;
+    let url = '../signUp/signUp?classId=' + classId + '&className=' + className +
       '&teacher=' + teacher + '&time=' + msg_x;
     console.log(url);
     if (that.data.isStudent) {
@@ -613,10 +589,10 @@ Page({
    * 下拉刷新
    */
   onPullDownRefresh: function () {
-    var that = this;
-    var lab = that.data.classroom[that.data.room_index];
-    var week = that.data.week[that.data.week_index];
-    var term = that.data.term[that.data.indexT];
+    let that = this;
+    let lab = that.data.classroom[that.data.room_index];
+    let week = that.data.week[that.data.week_index];
+    let term = that.data.term[that.data.indexT];
 
     console.log(lab);
     console.log(week);
@@ -624,7 +600,7 @@ Page({
 
     wx.showLoading({
       title: '加载中',
-    })
+    });
     wx.cloud.callFunction({
       name: 'getInfobyweek',
       data: {
@@ -645,4 +621,4 @@ Page({
       },
     })
   }
-})
+});
