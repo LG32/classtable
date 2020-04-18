@@ -11,7 +11,7 @@ Page({
     userInfoFlag: false,
     password: '',
     id: -1,
-    identity: '教师登录',
+    identityStatus: '教师登录',
     changeIdentity: '切换至学生登录',
     isStudent: false,
   },
@@ -20,13 +20,12 @@ Page({
   onLoad: function (options) {
     var that = this;
     var id = options.id;
-    var isStudent = options.isStudent;
     console.log("获取用户信息");
     that.checkGetSetting();
     that.setData({
       id: id,
     })
-    if (id == 1) {
+    if (1 == id) {
       util.showBusy('请先登录！');
     }
   },
@@ -66,7 +65,7 @@ Page({
     if (!that.data.isStudent) {
       var password = e.detail.value.password;
       var teacher_id = e.detail.value.teacher_id;
-      if (password != '' && teacher_id != '') {
+      if (password !== '' && teacher_id !== '') {
         wx.cloud.callFunction({
           name: 'teacherlogin',
           data: {
@@ -80,8 +79,7 @@ Page({
               util.showSuccess(res.result.msg);
               wx.setStorageSync('teacher_id', teacher_id);
               wx.setStorageSync('session', startDate);
-              wx.setStorageSync('isTeacher', true);
-              wx.setStorageSync('isStudent', false);
+              wx.setStorageSync('identity', 'teacher');
               if (id == 0) {
                 wx.redirectTo({
                   url: '../addC/addC',
@@ -106,13 +104,12 @@ Page({
       }
     } else {
       var student_id = e.detail.value.student_id;
-      if (student_id != '' && student_id.length == 10) {
+      if (student_id !== '' && student_id.length === 10) {
         console.log(student_id);
         wx.hideLoading();
         wx.setStorageSync('studentId', student_id);
         wx.setStorageSync('session', startDate);
-        wx.setStorageSync('isTeacher', false);
-        wx.setStorageSync('isStudent', true);
+        wx.setStorageSync('identity', 'student');
         wx.navigateTo({
           url: '../tablepage/tablepage',
         })
@@ -158,13 +155,13 @@ Page({
     var that = this;
     if (!that.data.isStudent) {
       that.setData({
-        identity: '学生登录',
+        identityStatus: '学生登录',
         changeIdentity: '切换至教师登录',
         isStudent: true,
       })
     } else if (that.data.isStudent) {
       that.setData({
-        identity: '教师登录',
+        identityStatus: '教师登录',
         changeIdentity: '切换至学生登录',
         isStudent: false,
       })

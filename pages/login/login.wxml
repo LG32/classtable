@@ -10,7 +10,7 @@
 
 <view class='userinfo-loginbtn'>
   <view class='title-line'>
-    <text class='form-title'>{{identity}}</text>
+    <text class='form-title'>{{identityStatus}}</text>
   </view>
   <form bindsubmit="formSubmit">
     <view class='password-view' wx:if='{{isStudent==false}}'>
