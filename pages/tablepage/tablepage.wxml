@@ -4,8 +4,8 @@
     <view class='message-mask' wx:if="{{message_tip}}" bindtap='message_disappear' class='messages-mask'>
       <text class='message-text'>{{subject[msg_x][msg_y].subject}}\n {{subject[msg_x][msg_y].teacher}}\n {{subject[msg_x][msg_y].class}}</text>
 
-      <image src='../../images/delete.png' class='img_delete' bindtap='deleteInfo' wx:if='{{isTeacher}}'></image>
-      <button class='signInBtn' wx:if='{{!isTeacher && subject[msg_x][msg_y].state == 1}}' bindtap='signIn'>签到</button>
+      <image src='../../images/delete.png' class='img_delete' bindtap='deleteInfo' wx:if='{{identity === "teacher"}}'></image>
+      <button class='signInBtn' wx:if='{{identity === "teacher" && subject[msg_x][msg_y].state === 1}}' bindtap='signIn'>签到</button>
     </view>
 
     <view class='picker-box'>

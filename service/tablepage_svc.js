@@ -29,13 +29,12 @@ let getInfoByWeek = (param, callback) =>{
             term: term,
         },
         success: res => {
-            wx.hideLoading();
-            console.log(res);
-            callback(res);
+            wx.hideLoading(undefined);
+            callback(res, true);
         },
         fail: res => {
-            wx.hideLoading();
-            console.log(res);
+            wx.hideLoading(undefined);
+            callback(res, false)
         }
     })
 };
@@ -62,13 +61,37 @@ let getInfoTest = (param, callback) => {
             },
         fail: res => {
             wx.hideLoading(undefined);
-            console.log(res);
         }
     });
 };
+
+// 删除课程
+let deleteInfo = (param, callback) => {
+    let id  = param._id
+    let teacher_id = param.teacher_id
+    wx.showLoading({
+        title: '加载中',
+    });
+    wx.cloud.callFunction({
+        name: 'deleteInfo',
+        data: {
+            _id: id,
+            teach_id: teacher_id,
+        },
+        success: res => {
+            callback(res, true)
+            wx.hideLoading(undefined);
+        },
+        fail: res => {
+            callback(res, false)
+            wx.hideLoading(undefined);
+        }
+    })
+}
 
 module.exports = {
     getAllLab: getAllLab,
     getInfoByWeek: getInfoByWeek,
     getInfoTest: getInfoTest,
+    deleteInfo: deleteInfo,
 };

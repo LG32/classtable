@@ -24,7 +24,7 @@ Page({
   data: {
     classroom: ["西-新E1105", "东区101", "西-新E1329"],
     week: week,
-    term: ['2019年秋', '2019年春', '2018年秋'],
+    term: ['2020年春', '2019年秋', '2019年春', '2018年秋'],
     grade: [],
     indexT: 0,
     room_index: 0,
@@ -48,8 +48,7 @@ Page({
     message_tip: false,
     term_arr: false,
     onLoadFlag: true, //判断程序是否第一次启动
-    isStudent: false,
-    isTeacher: false,
+    identity: 'visitor',
     studentId: '',
   },
 
@@ -62,10 +61,10 @@ Page({
     console.log(startDate);
     let that = this;
     let lab = that.data.classroom[that.data.room_index];
-    let term = wx.getStorageSync('term');
-    if (typeof (term) == "undefined" || term.length === 0) {
-      term = that.data.term[that.data.indexT];
-    }
+    // let term = wx.getStorageSync('term');
+    // if (typeof (term) == "undefined" || term.length === 0) {
+      let term = that.data.term[that.data.indexT];
+    // }
 
     if (options.week !== undefined && options.room_index) {
       that.setData({
@@ -89,9 +88,6 @@ Page({
     TablePageSVC.getAllLab(that.getAllLab_cb)
   },
 
-  /**
-   * 生命周期
-   */
   onShow: function (options) {
     let that = this;
     if (that.data.onLoadFlag) {
@@ -102,14 +98,11 @@ Page({
       wx.onAppShow;
       that.onPullDownRefresh();
     }
-    let isStudent = wx.getStorageSync('isStudent');
-    let isTeacher = wx.getStorageSync('isTeacher');
+    let identity = wx.getStorageSync('identity');
     let studentId = wx.getStorageSync('studentId');
-    console.log(studentId);
-    if (typeof (isStudent) != "undefined" && typeof (isTeacher) != "undefined") {
+    if (typeof (identity) != "undefined" && identity !== '' ) {
       that.setData({
-        isStudent: isStudent,
-        isTeacher: isTeacher,
+        identity: identity,
       })
     }
     if (typeof (studentId) != 'undefined' && studentId.length !== 0) {
@@ -220,29 +213,7 @@ Page({
     })
   },
 
-  /**
-   * 请求得到所有实验室数据
-   */
-  getAllLab_cb: function (classroom) {
-    let that = this;
-    that.setData({
-      classroom: classroom,
-    })
-  },
-
-  getCloudInfo_cb: function (res) {
-    let that = this;
-    that.information_factory(res);
-  },
-
-  getInfoTest_cb: function (res) {
-    let that = this;
-    that.setData({
-      information_obj: res,
-    });
-    that.information_factory(res);
-  },
-
+  // 改变实验室
   bindPickerChange_a: function (e) {
     let that = this;
     let room_index = e.detail.value;
@@ -274,6 +245,7 @@ Page({
     })
   },
 
+  // 改变周数
   bindPickerChange_b: function (e) {
     let that = this;
     let week_idx = e.detail.value;
@@ -305,6 +277,7 @@ Page({
     })
   },
 
+  // 改变学期
   bindPickerChange_term: function (e) {
     let that = this;
     let term_idx = e.detail.value;
@@ -372,11 +345,11 @@ Page({
       wx.setStorageSync('date', date);
       wx.setStorageSync('term', that.data.term[that.data.indexT]);
 
-      that.judgeClassFree(zone_x, zone_y);
-      if (that.data.isTeacher === true && that.data.isStudent === false) {
+      // that.judgeClassFree(zone_x, zone_y);
+      if (that.data.identity === 'teacher') {
         if (session === startDate) {
           wx.navigateTo({
-            url: '../addC/addC',
+            url: '../addC/addC?zone_x=' + zone_x + "&zone_y=" + zone_y,
           })
         } else {
           wx.navigateTo({
@@ -385,11 +358,12 @@ Page({
         }
       }
 
-      if (that.data.isTeacher === false && that.data.isStudent === true) {
-        util.showBusy('学生无法新建实验');
+      if (that.data.identity === 'student') {
+        // util.showBusy('学生无法新建实验');
+        return
       }
 
-      if (that.data.isTeacher === false && that.data.isStudent === false) {
+      if (that.data.identity === 'visitor') {
         wx.navigateTo({
           url: '../login/login?id=0',
         })
@@ -404,13 +378,14 @@ Page({
     let day_index = x;
     let free = 0;
     let subject = that.data.subject;
-    for (let i = 0; i < 6; i++) {
-      if (subject[i][day_index].subject === 0) {
-        console.log('(' + i + ',' + day_index + ') is free');
-        free = free + ',' + (i + 1);
-      }
-    }
-    wx.setStorageSync('free', free);
+    // for (let i = 0; i < 6; i++) {
+    //   if (subject[i][day_index].subject == 0) {
+    //     console.log('(' + i + ',' + day_index + ') is free');
+    //     free = free + ',' + (i + 1);
+    //   }
+    // }
+    // wx.setStorageSync('free', free);
+    wx.setStorageSync('subject', that.data.subject);
   },
 
   message_disappear: function () {
@@ -462,8 +437,10 @@ Page({
     let teacher_id = wx.getStorageSync('teacher_id');
     let session = wx.getStorageSync('session');
     let today_date = that.data.today_date;
-    console.log("session" + session);
-    console.log('teacher_id' + teacher_id);
+    let param = {
+      "_id": id,
+      'teacher_id': teacher_id,
+    }
 
     if (session === today_date && teacher_id !== '') {
       wx.showModal({
@@ -471,31 +448,8 @@ Page({
         content: '是否删除这节实验课',
         success: res => {
           if (res.confirm) {
-            wx.showLoading({
-              title: '加载中',
-            });
-            wx.cloud.callFunction({
-              name: 'deleteInfo',
-              data: {
-                _id: id,
-                teach_id: teacher_id,
-              },
-              success: res => {
-                console.log(res);
-                wx.hideLoading();
-                if (res.result.res === 1) {
-                  util.showSuccess('成功删除');
-                  that.onPullDownRefresh();
-                } else if (res.result.res === 0) {
-                  util.showModel('失败', '您不是该实验的建立者');
-                }
-              },
-              fail: res => {
-                wx.hideLoading();
-                console.log(res);
-              }
-            })
-          } else if (res.cancel) { }
+            TablePageSVC.deleteInfo(param, that.deleteInfo_cb)
+          } else if (res.cancel) {}
         }
       })
     } else {
@@ -510,52 +464,53 @@ Page({
     let session = wx.getStorageSync('session');
     let teacher_id = wx.getStorageSync('teacher_id');
     let startDate = that.data.today_date;
+    console.log("identity is", that.data.identity);
     console.log(teacher_id);
 
-    if (that.data.isTeacher === true) {
-      if (session === startDate && teacher_id !== '') {
-        wx.navigateTo({
-          url: '../myclass/myclass',
-        })
-      } else {
+    switch (that.data.identity) {
+
+      case "visitor":
         wx.navigateTo({
           url: '../login/login?id=1',
         })
-      }
-    }
+        break;
 
-
-    if (that.data.isStudent === true) {
-      wx.showModal({
-        title: '提示',
-        content: '是否要注销该账户',
-        success: res => {
-          if (res.confirm) {
-            wx.showModal({
-              title: '提示',
-              content: '注销账号成功',
-              showCancel: false,
-              confirmText: '确定',
-              success: function (res) {
-                wx.setStorageSync('isStudent', false);
-                wx.setStorageSync('isTeacher', false);
-                wx.setStorageSync('studentId', '')
-                that.setData({
-                  isStudent: false,
-                  isTeacher: false,
-                  studentId: '',
-                })
-              },
-            })
-          }
+      case "teacher":
+        if (session === startDate && teacher_id !== '') {
+          wx.navigateTo({
+            url: '../myclass/myclass',
+          })
+        } else {
+          wx.navigateTo({
+            url: '../login/login?id=1',
+          })
         }
-      })
-    }
+        break;
 
-    if (that.data.isStudent === false && that.data.isTeacher === false) {
-      wx.navigateTo({
-        url: '../login/login?id=1',
-      })
+      case "student":
+        wx.showModal({
+          title: '提示',
+          content: '是否要注销该账户',
+          success: res => {
+            if (res.confirm) {
+              wx.showModal({
+                title: '提示',
+                content: '注销账号成功',
+                showCancel: false,
+                confirmText: '确定',
+                success: function (res) {
+                  wx.setStorageSync('identity', 'visitor');
+                  wx.setStorageSync('studentId', '')
+                  that.setData({
+                    identity: 'visitor',
+                    studentId: '',
+                  })
+                },
+              })
+            }
+          }
+        })
+        break;
     }
   },
 
@@ -573,7 +528,7 @@ Page({
     let url = '../signUp/signUp?classId=' + classId + '&className=' + className +
       '&teacher=' + teacher + '&time=' + msg_x;
     console.log(url);
-    if (that.data.isStudent) {
+    if (that.data.identity === 'student') {
       wx.navigateTo({
         url: url,
       })
@@ -594,31 +549,65 @@ Page({
     let week = that.data.week[that.data.week_index];
     let term = that.data.term[that.data.indexT];
 
-    console.log(lab);
-    console.log(week);
-    console.log(term);
+    let param = {
+      'lab': lab,
+      'week': week,
+      'term': term,
+    };
+    TablePageSVC.getInfoByWeek(param, that.onPullDownRefresh_cb);
+  },
 
-    wx.showLoading({
-      title: '加载中',
-    });
-    wx.cloud.callFunction({
-      name: 'getInfobyweek',
-      data: {
-        lab: lab,
-        week: week,
-        term: term,
-      },
-      success: res => {
-        wx.hideLoading();
-        console.log(res);
-        that.information_factory(res);
-        wx.stopPullDownRefresh();
-      },
-      fail: res => {
-        wx.hideLoading();
-        util.showModel('错误', '刷新失败！');
-        wx.stopPullDownRefresh();
-      },
+  /**
+   * 请求得到所有实验室数据
+   */
+  getAllLab_cb: function (classroom) {
+    let that = this;
+    that.setData({
+      classroom: classroom,
     })
-  }
+  },
+
+  getCloudInfo_cb: function (res, flag) {
+    let that = this;
+    if (flag === true){
+      that.information_factory(res);
+    }else{
+      console.log(res)
+    }
+  },
+
+  getInfoTest_cb: function (res) {
+    let that = this;
+    console.log(res)
+    that.setData({
+      information_obj: res,
+    });
+    that.information_factory(res);
+  },
+
+  //flag为是否刷新成功,true为成功
+  onPullDownRefresh_cb: function (res, flag) {
+    let that = this;
+    if (flag === false) {
+      util.showModel('错误', '刷新失败！');
+    }else {
+      that.information_factory(res);
+    }
+    wx.stopPullDownRefresh(undefined);
+  },
+
+  deleteInfo_cb:function (res, flag) {
+    let that = this;
+    console.log("delect info", res)
+    if (flag === false){
+
+    }else {
+      if (res.result.res === 1) {
+        util.showSuccess('成功删除');
+        that.onPullDownRefresh();
+      } else if (res.result.res === 0) {
+        util.showModel('失败', '您不是该实验的建立者');
+      }
+    }
+  },
 });

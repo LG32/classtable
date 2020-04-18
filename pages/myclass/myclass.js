@@ -85,8 +85,9 @@ Page({
   },
 
   startSignIn: function (e) {
-    var that = this;
-    var zoneId = e.currentTarget.id;
+    let that = this;
+    let zoneId = e.currentTarget.id;
+    let url = ''
     console.log(zoneId);
     switch (that.data.subject[zoneId].state) {
       case 0:
@@ -95,7 +96,8 @@ Page({
           content: '是否开始签到',
           success: res => {
             if (res.confirm) {
-              var url = '../startSign/startSign?classId=' + that.data.subject[zoneId]._id + '&state=' + that.data.subject[zoneId].state;
+              url = '../startSign/startSign?classId=' + that.data.subject[zoneId]._id
+                  + '&state=' + that.data.subject[zoneId].state;
               wx.navigateTo({
                 url: url,
               })
@@ -109,14 +111,16 @@ Page({
         break;
 
       case 1:
-        var url = '../startSign/startSign?classId=' + that.data.subject[zoneId]._id + '&state=' + that.data.subject[zoneId].state;
+        url = '../startSign/startSign?classId=' + that.data.subject[zoneId]._id
+            + '&state=' + that.data.subject[zoneId].state;
         wx.navigateTo({
           url: url,
         })
         break;
 
       case 2:
-        var url = '../startSign/startSign?classId=' + that.data.subject[zoneId]._id + '&state=' + that.data.subject[zoneId].state;
+        url = '../startSign/startSign?classId=' + that.data.subject[zoneId]._id
+            + '&state=' + that.data.subject[zoneId].state;
         wx.navigateTo({
           url: url,
         })
