@@ -5,21 +5,29 @@
       <view class="section22">
         <view class="input_left">专业：</view>
         <view class='input_textarea' disabled='true' wx:if='{{!flag}}'>请选择</view>
-        <view class='input_textarea' disabled='true' wx:if='{{flag}}'>{{major[indexM].major_name}}</view>
+        <view class='input_textarea' disabled='true' wx:if='{{flag}}'>{{majorName[indexM]}}</view>
       </view>
     </picker>
 
-    <view class="section22">
-      <view class="input_left">课程名：</view>
-      <input bindinput="wxSearchInput" bindfocus="wxSerchFocus" value="{{wxSearchData.value}}" bindblur='wxSearchBlur' class="input_textarea" placeholder="未输入" />
-    </view>
-    <view class="wxSearch" bindtap="wxSearchTap" wx:if='{{wxSearchData.view.isShow}}'>
-      <view class="wxSearchInner">
-        <block wx:for="{{wxSearchData.mindKeys}}" wx:key=''>
-          <view class="wxSearchMindKeyItem" bindtap="wxSearchKeyTap" data-key="{{item}}">{{item}}</view>
-        </block>
-      </view>
-    </view>
+      <picker bindchange="bindMSubjectChange" value="{{indexS}}" range="{{course}}">
+          <view class="section22">
+              <view class="input_left">课程名：</view>
+              <view class='input_textarea' disabled='true' wx:if='{{!flag}}'>请选择</view>
+              <view class='input_textarea' disabled='true' wx:if='{{flag}}'>{{course[indexS]}}</view>
+          </view>
+      </picker>
+
+<!--    <view class="section22">-->
+<!--      <view class="input_left">课程名：</view>-->
+<!--      <input bindinput="wxSearchInput" bindfocus="wxSerchFocus" value="{{wxSearchData.value}}" bindblur='wxSearchBlur' class="input_textarea" placeholder="未输入" />-->
+<!--    </view>-->
+<!--    <view class="wxSearch" bindtap="wxSearchTap" wx:if='{{wxSearchData.view.isShow}}'>-->
+<!--      <view class="wxSearchInner">-->
+<!--        <block wx:for="{{wxSearchData.mindKeys}}" wx:key=''>-->
+<!--          <view class="wxSearchMindKeyItem" bindtap="wxSearchKeyTap" data-key="{{item}}">{{item}}</view>-->
+<!--        </block>-->
+<!--      </view>-->
+<!--    </view>-->
 
     <picker bindchange="bindGPickerChange" value="{{indexG}}" range="{{arrayGrd}}">
       <view class="section22">
