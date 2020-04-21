@@ -63,6 +63,7 @@ Page({
         majorName: [],
         gradeInfo: [],
         class_num: [],
+        indexS: 0,
         indexM: 0,
         indexG: 0,
         indexN: 0,
@@ -77,6 +78,7 @@ Page({
         showlist: 0,
         classValue: '',
         term: '',
+        course: [],
     },
 
     onLoad: function (options) {
@@ -126,18 +128,30 @@ Page({
      */
     allcourse: function () {
         let term = 'S';
+        let that = this
         wx.cloud.callFunction({
             name: 'getallcourses',
             data: {
                 term: term
             },
             success: res => {
-                let course_name = new Array();
-                console.log(res);
-                for (let i = 0; i < res.result.data.length; i++) {
-                    course_name[i] = res.result.data[i].course_name;
+                let data = res.result.data
+                let course_name = [];
+                let courses = [];
+                for (let i = 0; i < data.length; i++) {
+                    let name = data[i].course_name;
+                    let major = data[i].course_major
+                    course_name[i] = name;
+                    if(!courses[major]){
+                        courses[major] = [];
+                    }
+
+                    courses[major].push(name);
                 }
                 initMindKeys(course_name);
+                that.setData({
+                    courses: courses
+                })
             },
             fail: res => {
                 console.log(res);
@@ -424,15 +438,28 @@ Page({
         })
     },
 
+    bindMSubjectChange: function (e) {
+
+        console.log('subject发送选择改变，携带值为', e.detail.value);
+        this.setData({
+            indexS: e.detail.value
+        })
+    },
+
     /**
      * 选择专业
      */
     bindMPickerChange: function (e) {
-        console.log('专业pickerM选择发生改变, 携带值为', e.detail.value)
         let that = this;
+        let courses = that.data.courses
+        let idx = e.detail.value
+        let course_name = that.data.majorName[idx]
+        console.log('专业pickerM选择发生改变, 携带值为', e.detail.value, courses[course_name], courses, course_name)
+
         that.setData({
             flag: true,
-            indexM: e.detail.value
+            indexM: idx,
+            course: courses[course_name],
         })
         that.initGradeCheckBox();
     },
