@@ -19,7 +19,7 @@
   padding: 10rpx;
   border-radius: 20rpx;
   margin: 20rpx 10rpx;
-  height: 320rpx;
+  height: 400rpx;
   background-color: #fff;
   box-shadow: 3rpx 3rpx 20rpx #888;
   display: flex;

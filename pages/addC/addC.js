@@ -1,4 +1,5 @@
 const util = require('../../utils/util.js');
+let AddClassSVC = require('../../service/add_class_svc');
 
 let __mindKeys = [];
 
@@ -61,6 +62,7 @@ Page({
         checkClass: '',
         major: ['软件工程', '集成工程', '物联网', '微电子'],
         majorName: [],
+        projectName: ['实验1', '实验2', '实验3', '实验4'],
         gradeInfo: [],
         class_num: [],
         indexS: 0,
@@ -68,6 +70,7 @@ Page({
         indexG: 0,
         indexN: 0,
         indexC: 0,
+        indexP: 0,
         week: 0,
         classroom: 0,
         teacher_id: 0,
@@ -116,46 +119,22 @@ Page({
         //   [check]: 1,
         // })
         // that.checkboxItems();
-        that.allcourse();
+        AddClassSVC.allCourse(that.all_course_cb);
         init(that, 215);
         that.lastMemory();
-        that.getAllGrade();
+        // that.getAllGrade();
+        AddClassSVC.getAllGrade(that.getAllGrade_cb);
         that.getAllMajor();
     },
 
     /**
      * 获取所有课程名
      */
-    allcourse: function () {
-        let term = 'S';
+    all_course_cb: function (course_name, courses) {
         let that = this
-        wx.cloud.callFunction({
-            name: 'getallcourses',
-            data: {
-                term: term
-            },
-            success: res => {
-                let data = res.result.data
-                let course_name = [];
-                let courses = [];
-                for (let i = 0; i < data.length; i++) {
-                    let name = data[i].course_name;
-                    let major = data[i].course_major
-                    course_name[i] = name;
-                    if(!courses[major]){
-                        courses[major] = [];
-                    }
-
-                    courses[major].push(name);
-                }
-                initMindKeys(course_name);
-                that.setData({
-                    courses: courses
-                })
-            },
-            fail: res => {
-                console.log(res);
-            },
+        initMindKeys(course_name);
+        that.setData({
+            courses: courses
         })
     },
 
@@ -194,21 +173,10 @@ Page({
     /**
      * 获取所有年级信息
      */
-    getAllGrade: function () {
-        wx.cloud.callFunction({
-            name: 'getallgrade',
-            data: {},
-            success: res => {
-                console.log(res);
-                let gradeInfo = res.result.data;
-                let that = this;
-                that.setData({
-                    gradeInfo: gradeInfo,
-                })
-            },
-            fail: res => {
-                console.log(res);
-            },
+    getAllGrade_cb: function (gradeInfo) {
+        let that = this;
+        that.setData({
+            gradeInfo: gradeInfo,
         })
     },
 
@@ -439,7 +407,6 @@ Page({
     },
 
     bindMSubjectChange: function (e) {
-
         console.log('subject发送选择改变，携带值为', e.detail.value);
         this.setData({
             indexS: e.detail.value
@@ -499,6 +466,16 @@ Page({
         }
     },
 
+    /**
+     * 选择课题
+     */
+    bindProjectChange: function (e) {
+        console.log('选择课题,携带值', e.detail.value)
+        this.setData({
+            indexP: e.detail.value
+        })
+    },
+
     setGrade: function () {
         let grade_textArea = true;
         this.setData({
@@ -514,9 +491,7 @@ Page({
         let timeFirst = that.data.timeFirst;
         let course_class = that.data.checkClass;
         let major = that.data.majorName[that.data.indexM];
-        let course_name = that.data.inputCourseValue;
-        let part = part;
-
+        let course_name = that.data.course[that.data.indexS]
         if (major == '' || course_class == '' || course_name == '') {
             util.showBusy('请完善信息！');
             console.log(course_class);
@@ -530,7 +505,7 @@ Page({
         let that = this;
         let course_class = that.data.majorName[that.data.indexM] + that.data.checkClass + '班';
         let course_date = that.data.date;
-        let course_name = that.data.inputCourseValue;
+        let course_name = that.data.course[that.data.indexS]
         let course_room = that.data.classroom;
         let teach_id = that.data.teacher_id;
         let indexG = that.data.indexG;

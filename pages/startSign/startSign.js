@@ -4,11 +4,11 @@ var hour = [];
 var minute = [];
 var util = require("../../utils/util.js");
 
-for (var i = 0; i < 2; i++) {
+for (let i = 0; i < 2; i++) {
   hour.push(i)
 }
 
-for (var i = 5; i < 60; i++) {
+for (let i = 5; i < 60; i++) {
   minute.push(i);
 }
 
