@@ -1,8 +1,8 @@
 {
   "pages": [
     "pages/tablepage/tablepage",
-    "pages/startSign/startSign",
     "pages/signUp/signUp",
+    "pages/startSign/startSign",
     "pages/myclass/myclass",
     "pages/addC/addC",
     "pages/login/login",
