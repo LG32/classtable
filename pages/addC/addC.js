@@ -92,15 +92,9 @@ Page({
         let teacher_id = wx.getStorageSync('teacher_id');
         let date = wx.getStorageSync('date');
         let part = wx.getStorageSync('part');
-        // let freeString = wx.getStorageSync('free');
         let term = wx.getStorageSync('term');
-
         let weekArray = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
         let day = weekArray[new Date(date).getDay()];
-        // let free = freeString.split(',');
-        // console.log('free' + free[0]);
-        // let click_part = part - 1;
-        // let check = 'check_items[' + click_part + '].checked';
         let timeFirst = [];
         timeFirst[0] = part;
 
@@ -115,14 +109,10 @@ Page({
             room_index: room_index,
             term: term,
         })
-        // that.setData({
-        //   [check]: 1,
-        // })
-        // that.checkboxItems();
+
         AddClassSVC.allCourse(that.all_course_cb);
         init(that, 215);
         that.lastMemory();
-        // that.getAllGrade();
         AddClassSVC.getAllGrade(that.getAllGrade_cb);
         that.getAllMajor();
     },
@@ -375,11 +365,6 @@ Page({
 
 
     wxSearchTap: function (e) {
-        // let that = this
-        // let temData = that.data.wxSearchData;
-        // temData.view.isShow = false;
-        // console.log('wxSearchTap');
-        // console.log(temData);
     },
 
     bindClassInput: function (e) {
@@ -436,10 +421,8 @@ Page({
      * 选择班级
      */
     bindCPickerChange: function (e) {
-        console.log('选择班级,携带值', e.detail.value)
         let that = this;
         let check = e.detail.value;
-        console.log(check);
         if (that.data.mark_class[check] === true) {
             util.showBusy('已选择！');
         }

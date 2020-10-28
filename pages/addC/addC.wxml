@@ -17,13 +17,13 @@
           </view>
       </picker>
 
-      <picker bindchange="bindProjectChange" value="{{indexP}}" range="{{projectName}}">
-          <view class="section22">
-              <view class="input_left">课题名：</view>
-              <view class='input_textarea' disabled='true' wx:if='{{!flag}}'>请选择</view>
-              <view class='input_textarea' disabled='true' wx:if='{{flag}}'>{{projectName[indexP]}}</view>
-          </view>
-      </picker>
+<!--      <picker bindchange="bindProjectChange" value="{{indexP}}" range="{{projectName}}">-->
+<!--          <view class="section22">-->
+<!--              <view class="input_left">课题名：</view>-->
+<!--              <view class='input_textarea' disabled='true' wx:if='{{!flag}}'>请选择</view>-->
+<!--              <view class='input_textarea' disabled='true' wx:if='{{flag}}'>{{projectName[indexP]}}</view>-->
+<!--          </view>-->
+<!--      </picker>-->
 
 <!--    <view class="section22">-->
 <!--      <view class="input_left">课程名：</view>-->

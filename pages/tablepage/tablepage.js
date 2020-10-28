@@ -24,7 +24,7 @@ Page({
   data: {
     classroom: ["西-新E1105", "东区101", "西-新E1329"],
     week: week,
-    term: ['2020年春', '2019年秋', '2019年春', '2018年秋'],
+    term: ['2020年秋','2020年春', '2019年秋', '2019年春', '2018年秋'],
     grade: [],
     indexT: 0,
     room_index: 0,
@@ -121,10 +121,6 @@ Page({
     let month = date[1];
     let monday = parseInt(date[2]);
     let week = obj.result.week;
-
-    console.log('date' + date);
-    console.log('data');
-    console.log(data);
 
     that.setData({
       month_date: month,
@@ -560,10 +556,13 @@ Page({
   /**
    * 请求得到所有实验室数据
    */
-  getAllLab_cb: function (classroom) {
+  getAllLab_cb: function (data) {
     let that = this;
+    let classroom = data.classroom
+    let grade = data.grade
     that.setData({
       classroom: classroom,
+      grade: grade
     })
   },
 
