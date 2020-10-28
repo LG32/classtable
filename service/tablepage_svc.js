@@ -1,14 +1,25 @@
 
 let getAllLab = callback => {
-    let classroom = [];
+
     wx.cloud.callFunction({
         name: 'getalllab',
         success: res => {
             console.log(res);
-            for (let i = 0; i < res.result.data.length; i++) {
-                classroom[i] = res.result.data[i].lab_room;
+            let lab = res.result.data.lab
+            let grade = res.result.data.grade
+            let classroom = new Array()
+            for (let i = 0; i < lab.length; i++) {
+                classroom[i] = lab[i].lab_room;
             }
-            callback(classroom);
+            let grade_number = new Array()
+            for (let i = 0; i < grade.length; i++) {
+                grade_number[i] = grade[i].grade_number;
+            }
+            let data = {
+                'classroom' : classroom,
+                'grade' : grade_number,
+            };
+            callback(data);
         }
     })
 };

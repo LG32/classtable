@@ -22,7 +22,7 @@ let getAllGrade = callback => {
  * 获取所有课程名
  */
 let allCourse = (callback) => {
-    let term = 'S';
+    let term = 'A';
     let that = this
     wx.cloud.callFunction({
         name: 'getallcourses',

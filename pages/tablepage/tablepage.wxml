@@ -73,19 +73,19 @@
 
           <block wx:for='{{subject[index_x]}}' wx:key='idy' wx:for-index='index_y'>
             <view wx:if='{{subject[index_x][index_y].subject != 0}}' class='classpaper'>
-              <view wx:if='{{subject[index_x][index_y].grade == 2019 || subject[index_x][index_y].grade == 19}}' class='classview-old'>
+              <view wx:if='{{subject[index_x][index_y].grade == grade[3]}}' class='classview-old'>
                 <view class='isClass' bindtap='message_appear' id='{{index_x}},{{index_y}}'> {{subject[index_x][index_y].subject}} {{subject[index_x][index_y].teacher}} {{subject[index_x][index_y].class}}</view>
               </view>
 
-              <view wx:if='{{subject[index_x][index_y].grade == 2016 || subject[index_x][index_y].grade == 16}}' class='classview-top'>
+              <view wx:if='{{subject[index_x][index_y].grade == grade[0]}}' class='classview-top'>
                 <view class='isClass' bindtap='message_appear' id='{{index_x}},{{index_y}}'> {{subject[index_x][index_y].subject}} {{subject[index_x][index_y].teacher}} {{subject[index_x][index_y].class}}</view>
               </view>
 
-              <view wx:if='{{subject[index_x][index_y].grade == 2017 || subject[index_x][index_y].grade == 17}}' class='classview-middle'>
+              <view wx:if='{{subject[index_x][index_y].grade == grade[1]}}' class='classview-middle'>
                 <view class='isClass' bindtap='message_appear' id='{{index_x}},{{index_y}}'> {{subject[index_x][index_y].subject}} {{subject[index_x][index_y].teacher}} {{subject[index_x][index_y].class}}</view>
               </view>
 
-              <view wx:if='{{subject[index_x][index_y].grade == 2018 || subject[index_x][index_y].grade == 18}}' class='classview-fresh'>
+              <view wx:if='{{subject[index_x][index_y].grade == grade[2]}}' class='classview-fresh'>
                 <view class='isClass' bindtap='message_appear' id='{{index_x}},{{index_y}}'> {{subject[index_x][index_y].subject}} {{subject[index_x][index_y].teacher}} {{subject[index_x][index_y].class}}</view>
               </view>
             </view>
@@ -102,28 +102,28 @@
       <view class='grade-box'>
         <view class='grade-box-item'>
           <view class='top-grade-color'></view>
-          <text class='grade-box-text' style='color: #8f63cc;'>16级</text>
+          <text class='grade-box-text' style='color: #8f63cc;'>{{grade[0]}}届</text>
         </view>
       </view>
 
       <view class='grade-box'>
         <view class='grade-box-item'>
           <view class='middle-grade-color'></view>
-          <text class='grade-box-text' style='color: #e56489'>17级</text>
+          <text class='grade-box-text' style='color: #e56489'>{{grade[1]}}届</text>
         </view>
       </view>
 
       <view class='grade-box'>
         <view class='grade-box-item'>
           <view class='fresh-grade-color'></view>
-          <text class='grade-box-text' style='color: #f1b969'>18级</text>
+          <text class='grade-box-text' style='color: #f1b969'>{{grade[2]}}届</text>
         </view>
       </view>
 
       <view class='grade-box'>
         <view class='grade-box-item'>
           <view class='old-grade-color'></view>
-          <text class='grade-box-text' style='color: #2bd4c7;'>19级</text>
+          <text class='grade-box-text' style='color: #2bd4c7;'>{{grade[3]}}届</text>
         </view>
       </view>
     </view>
