@@ -21,8 +21,8 @@ let getAllGrade = callback => {
 /**
  * 获取所有课程名
  */
-let allCourse = (callback) => {
-    let term = 'A';
+let allCourse = (session, callback) => {
+    let term = session;
     let that = this
     wx.cloud.callFunction({
         name: 'getallcourses',
@@ -31,6 +31,7 @@ let allCourse = (callback) => {
         },
         success: res => {
             let data = res.result.data
+            console.log('course_name', data)
             let course_name = [];
             let courses = [];
             for (let i = 0; i < data.length; i++) {

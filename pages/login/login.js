@@ -18,8 +18,8 @@ Page({
 
 
   onLoad: function (options) {
-    var that = this;
-    var id = options.id;
+    let that = this;
+    let id = options.id;
     console.log("获取用户信息");
     that.checkGetSetting();
     that.setData({
@@ -55,16 +55,16 @@ Page({
   },
 
   formSubmit: function (e) {
-    var that = this;
-    var startDate = util.formatTime(new Date);
-    var id = that.data.id;
+    let that = this;
+    let startDate = util.formatTime(new Date);
+    let id = that.data.id;
 
     wx.showLoading({
       title: '加载中',
     })
     if (!that.data.isStudent) {
-      var password = e.detail.value.password;
-      var teacher_id = e.detail.value.teacher_id;
+      let password = e.detail.value.password;
+      let teacher_id = e.detail.value.teacher_id;
       if (password !== '' && teacher_id !== '') {
         wx.cloud.callFunction({
           name: 'teacherlogin',
@@ -78,7 +78,7 @@ Page({
             if (res.result.res == 1) {
               util.showSuccess(res.result.msg);
               wx.setStorageSync('teacher_id', teacher_id);
-              wx.setStorageSync('session', startDate);
+              wx.setStorageSync('last_login', startDate);
               wx.setStorageSync('identity', 'teacher');
               if (id == 0) {
                 wx.redirectTo({
@@ -103,12 +103,12 @@ Page({
         util.showBusy('请输入完整！');
       }
     } else {
-      var student_id = e.detail.value.student_id;
+      let student_id = e.detail.value.student_id;
       if (student_id !== '' && student_id.length === 10) {
         console.log(student_id);
         wx.hideLoading();
         wx.setStorageSync('studentId', student_id);
-        wx.setStorageSync('session', startDate);
+        wx.setStorageSync('last_login', startDate);
         wx.setStorageSync('identity', 'student');
         wx.navigateTo({
           url: '../tablepage/tablepage',
@@ -152,7 +152,7 @@ Page({
    * 监听用户身份改变
    */
   onClickChangeIdentity: function () {
-    var that = this;
+    let that = this;
     if (!that.data.isStudent) {
       that.setData({
         identityStatus: '学生登录',

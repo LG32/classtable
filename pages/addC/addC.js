@@ -82,6 +82,7 @@ Page({
         classValue: '',
         term: '',
         course: [],
+        session: ''
     },
 
     onLoad: function (options) {
@@ -93,6 +94,7 @@ Page({
         let date = wx.getStorageSync('date');
         let part = wx.getStorageSync('part');
         let term = wx.getStorageSync('term');
+        let session = wx.getStorageSync('session')
         let weekArray = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
         let day = weekArray[new Date(date).getDay()];
         let timeFirst = [];
@@ -108,9 +110,10 @@ Page({
             timeFirst: timeFirst,
             room_index: room_index,
             term: term,
+            session:session
         })
 
-        AddClassSVC.allCourse(that.all_course_cb);
+        AddClassSVC.allCourse(session, that.all_course_cb);
         init(that, 215);
         that.lastMemory();
         AddClassSVC.getAllGrade(that.getAllGrade_cb);

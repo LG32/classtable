@@ -24,7 +24,8 @@ Page({
   data: {
     classroom: ["西-新E1105", "东区101", "西-新E1329"],
     week: week,
-    term: ['2020年秋','2020年春', '2019年秋', '2019年春', '2018年秋'],
+    term: ['2021年春','2020年秋','2020年春', '2019年秋', '2019年春', '2018年秋'],
+    semester: {},
     grade: [],
     indexT: 0,
     room_index: 0,
@@ -321,7 +322,7 @@ Page({
         last_click: zoneId,
       });
     } else {
-      let session = wx.getStorageSync('session');
+      let last_login = wx.getStorageSync('last_login');
       let zone = parseInt(zoneId);
       let zone_x = (zone) % 7;
       let zone_y = parseInt((zone) / 7);
@@ -333,19 +334,24 @@ Page({
       }
       let date = that.data.year_date + "-" + month + "-" + day;
       let startDate = that.data.today_date;
-
+      let indexT = that.data.indexT;
+      let semester = that.data.semester[indexT];
+      let session_key = semester.season
       wx.setStorageSync("week", that.data.week[that.data.week[that.data.week_index]]);
       wx.setStorageSync("classroom", that.data.classroom[that.data.room_index]);
       wx.setStorageSync('room_index', that.data.room_index);
       wx.setStorageSync('part', part);
       wx.setStorageSync('date', date);
       wx.setStorageSync('term', that.data.term[that.data.indexT]);
+      wx.setStorageSync('session', session_key)
 
-      // that.judgeClassFree(zone_x, zone_y);
+
       if (that.data.identity === 'teacher') {
-        if (session === startDate) {
+        if (last_login === startDate) {
           wx.navigateTo({
-            url: '../addC/addC?zone_x=' + zone_x + "&zone_y=" + zone_y,
+            url: '../addC/addC?zone_x=' + zone_x
+                + "&zone_y=" + zone_y
+                + "&session=" + session_key,
           })
         } else {
           wx.navigateTo({
@@ -365,23 +371,6 @@ Page({
         })
       }
     }
-  },
-
-
-  judgeClassFree: function (x, y) {
-    let that = this;
-    let part_index = y;
-    let day_index = x;
-    let free = 0;
-    let subject = that.data.subject;
-    // for (let i = 0; i < 6; i++) {
-    //   if (subject[i][day_index].subject == 0) {
-    //     console.log('(' + i + ',' + day_index + ') is free');
-    //     free = free + ',' + (i + 1);
-    //   }
-    // }
-    // wx.setStorageSync('free', free);
-    wx.setStorageSync('subject', that.data.subject);
   },
 
   message_disappear: function () {
@@ -431,7 +420,7 @@ Page({
     let subject = that.data.subject;
     let id = subject[msg_x][msg_y].id;
     let teacher_id = wx.getStorageSync('teacher_id');
-    let session = wx.getStorageSync('session');
+    let session = wx.getStorageSync('last_login');
     let today_date = that.data.today_date;
     let param = {
       "_id": id,
@@ -560,9 +549,14 @@ Page({
     let that = this;
     let classroom = data.classroom
     let grade = data.grade
+    let semester = data.semester
+    let term = data.term
+
     that.setData({
       classroom: classroom,
-      grade: grade
+      grade: grade,
+      semester: semester,
+      term: term
     })
   },
 
